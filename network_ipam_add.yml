@@ -1,0 +1,12 @@
+heat_template_version: queens
+resources:
+  test_ipam:
+    type: OS::ContrailV2::NetworkIpam
+    properties:
+      name: test-ipam
+      network_ipam_mgmt:
+          network_ipam_mgmt_dhcp_option_list:
+              network_ipam_mgmt_dhcp_option_list_dhcp_option:
+                      - { network_ipam_mgmt_dhcp_option_list_dhcp_option_dhcp_option_name:  "26",
+                        network_ipam_mgmt_dhcp_option_list_dhcp_option_dhcp_option_value: "9000" }   
+        
