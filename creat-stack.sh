@@ -10,6 +10,8 @@ openstack stack create -t add_flavor_dpdk.yml dpdk_flavor
 sleep 5
 openstack stack create -t security_group_add.yml sec_group
 sleep 5
+openstack stack create -t vdns.yml testvdns 
+sleep 5
 openstack stack create -t network_ipam_add.yml test-ipam
 sleep 5
 openstack stack create -t network-policy.yml test-network-policy 

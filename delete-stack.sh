@@ -8,6 +8,7 @@ sleep 5
 openstack stack delete left_vn -y --wait
 openstack stack delete right_vn -y --wait
 openstack stack delete test-network-policy -y --wait
+openstack stack delete testvdns -y --wait 
 sleep 5
 openstack stack delete test-ipam  -y --wait
 sleep 5
