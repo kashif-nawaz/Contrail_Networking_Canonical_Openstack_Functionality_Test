@@ -9,7 +9,7 @@ contrail-juju-verification.sh scripit will verify:- <br/>
  *  Check "Contrail-status" <br/> 
  *  Check "docker images version" <br/>
 
-creat-stack.sh script will create multiple stacks which will be used for verification of the Contrail Networking platform <br/>
+create-stack.sh script will create multiple stacks which will be used for verification of the Contrail Networking platform <br/>
  
  * Create glance image <br/>
 
