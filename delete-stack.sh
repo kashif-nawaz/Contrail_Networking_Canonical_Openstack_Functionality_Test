@@ -14,6 +14,8 @@ openstack stack delete test-ipam  -y --wait
 sleep 5
 openstack stack delete sec_group -y --wait
 sleep 5
+openstack stack delete testvdns -y --wait 
+sleep 5
 openstack stack delete flavor -y --wait
 openstack stack delete dpdk_flavor -y --wait
 sleep 5
