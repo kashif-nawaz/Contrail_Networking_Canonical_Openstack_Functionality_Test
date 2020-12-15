@@ -1,7 +1,8 @@
 # Contrail_Networking_Canonical_Openstack_Functionality_Test
 
 This repo is forked from:  
-https://github.com/kashif-nawaz/Contrail_Networking_Canonical_Openstack_Functionality_Test
+https://github.com/kashif-nawaz/Contrail_Networking_Canonical_Openstack_Functionality_Test  
+The original README can be found underneath ./stacks
 
 It adds an ansible wrapper to the establishment and teardown of Heat Stacks.
 
