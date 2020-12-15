@@ -1,0 +1,117 @@
+---
+# Test that Contrail API is working and correct objects exist from the instantiated 
+# heat stacks.
+# JSON data for the objects can be read with e.g. 'jq . ./output/vn_left'
+#
+# This is dependent on openstack cloud module
+# https://docs.ansible.com/ansible/latest/collections/openstack/cloud/auth_module.html
+
+- name: "Test Contrail API"
+  hosts: localhost
+  tasks:
+    - name: Authenticate to OpenStack
+      openstack.cloud.auth:
+      register: os_auth_results
+    - name: Base API check
+      uri:
+        url: "{{ api_url }}"
+    - name: Get Left VN UUID
+      uri:
+        url: "{{ api_url }}/fqname-to-id"
+        method: POST
+        return_content: yes
+        headers:
+          X-Auth-Token: "{{ os_auth_results.ansible_facts.auth_token }}"
+          Content-Type: "application/json; charset=UTF-8"
+        body: "{\"fq_name\": [\"admin_domain\", \"admin\", \"left-net\"], \"type\": \"virtual-network\"}"
+      register: vn_left_uuid
+    - name: Get Left VN
+      uri:
+        url: "{{ api_url }}/virtual-network/{{vn_left_uuid.json.uuid}}"
+        method: GET
+        return_content: yes
+        headers:
+          X-Auth-Token: "{{ os_auth_results.ansible_facts.auth_token }}"
+          Content-Type: "application/json; charset=UTF-8"
+      register: vn_left_json
+    - local_action: copy content={{ vn_left_json.json }} dest="{{results_dir}}/vn_left"
+    - name: Get Left VM
+      uri:
+        url: "{{ vn_left_json.json[\"virtual-network\"][\"virtual_machine_interface_back_refs\"][0][\"href\"] }}"
+        method: GET
+        return_content: yes
+        headers:
+          X-Auth-Token: "{{ os_auth_results.ansible_facts.auth_token }}"
+          Content-Type: "application/json; charset=UTF-8"
+      register: vm_left_json
+    - local_action: copy content={{ vm_left_json.json }} dest="{{results_dir}}/vm_left"
+    - name: Get Right VN UUID
+      uri:
+        url: "{{ api_url }}/fqname-to-id"
+        method: POST
+        return_content: yes
+        headers:
+          X-Auth-Token: "{{ os_auth_results.ansible_facts.auth_token }}"
+          Content-Type: "application/json; charset=UTF-8"
+        body: "{\"fq_name\": [\"admin_domain\", \"admin\", \"right-net\"], \"type\": \"virtual-network\"}"
+      register: vn_right_uuid
+    - name: Get Left VN
+      uri:
+        url: "{{ api_url }}/virtual-network/{{vn_right_uuid.json.uuid}}"
+        method: GET
+        return_content: yes
+        headers:
+          X-Auth-Token: "{{ os_auth_results.ansible_facts.auth_token }}"
+          Content-Type: "application/json; charset=UTF-8"
+      register: vn_right_json
+    - local_action: copy content={{ vn_right_json.json }} dest="{{results_dir}}/vn_right"
+    - name: Get Right VM
+      uri:
+        url: "{{ vn_right_json.json[\"virtual-network\"][\"virtual_machine_interface_back_refs\"][0][\"href\"] }}"
+        method: GET
+        return_content: yes
+        headers:
+          X-Auth-Token: "{{ os_auth_results.ansible_facts.auth_token }}"
+          Content-Type: "application/json; charset=UTF-8"
+      register: vm_right_json
+    - local_action: copy content={{ vm_right_json.json }} dest="{{results_dir}}/vm_right"
+    - name: Get Network Policy UUID
+      uri:
+        url: "{{ api_url }}/fqname-to-id"
+        method: POST
+        return_content: yes
+        headers:
+          X-Auth-Token: "{{ os_auth_results.ansible_facts.auth_token }}"
+          Content-Type: "application/json; charset=UTF-8"
+        body: "{\"fq_name\": [\"admin_domain\", \"admin\", \"test-policy\"], \"type\": \"network-policy\"}"
+      register: network_policy_uuid
+    - name: Get Network Policy
+      uri:
+        url: "{{ api_url }}/network-policy/{{network_policy_uuid.json.uuid}}"
+        method: GET
+        return_content: yes
+        headers:
+          X-Auth-Token: "{{ os_auth_results.ansible_facts.auth_token }}"
+          Content-Type: "application/json; charset=UTF-8"
+      register: network_policy_json
+    - local_action: copy content={{ network_policy_json.json }} dest="{{results_dir}}/network_policy"
+    - name: Get Security Group UUID
+      uri:
+        url: "{{ api_url }}/fqname-to-id"
+        method: POST
+        return_content: yes
+        headers:
+          X-Auth-Token: "{{ os_auth_results.ansible_facts.auth_token }}"
+          Content-Type: "application/json; charset=UTF-8"
+        body: "{\"fq_name\": [\"admin_domain\", \"admin\", \"test-sec-group\"], \"type\": \"security-group\"}"
+      register: security_group_uuid
+    - name: Get Security Group
+      uri:
+        url: "{{ api_url }}/security-group/{{security_group_uuid.json.uuid}}"
+        method: GET
+        return_content: yes
+        headers:
+          X-Auth-Token: "{{ os_auth_results.ansible_facts.auth_token }}"
+          Content-Type: "application/json; charset=UTF-8"
+      register: security_group_json
+    - local_action: copy content={{ security_group_json.json }} dest="{{results_dir}}/security_group"

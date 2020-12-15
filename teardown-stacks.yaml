@@ -1,0 +1,52 @@
+---
+- name: "Delete the Stacks"
+  hosts: localhost
+  tasks:
+    - name: "Delete left VM"
+      openstack.cloud.stack:
+        name: "NAPT_Left_VM"
+        state: absent
+    - name: "Delete Right VM"
+      openstack.cloud.stack:
+        name: "NAPT_Right_VM"
+        state: absent
+    - name: "Delete Left VN"
+      openstack.cloud.stack:
+        name: "NAPT_Left_VN"
+        state: absent
+    - name: "Delete Right VN"
+      openstack.cloud.stack:
+        name: "NAPT_Right_VN"
+        state: absent
+    - name: "Delete Network Policy"
+      openstack.cloud.stack:
+        name: "NAPT_Network_Policy"
+        state: absent
+    - name: "Delete Security Group"
+      openstack.cloud.stack:
+        name: "NAPT_Security_Group"
+        state: absent
+    - name: "Delete IPAM"
+      openstack.cloud.stack:
+        name: "NAPT_IPAM"
+        state: absent
+    - name: "Delete Virtual DNS"
+      openstack.cloud.stack:
+        name: "NAPT_Virtual_DNS"
+        state: absent
+    - name: "Delete Flavor" 
+      openstack.cloud.stack:
+        name: "NAPT_Flavor"
+        state: absent
+    - name: "Delete Flavor DPDK"
+      openstack.cloud.stack:
+        name: "NAPT_Flavor_DPDK"
+        state: absent
+    #- name: "Delete Image"
+    #ignore_errors: True
+    #register: stack_create
+    #openstack.cloud.stack:
+    #name: "NAPT_Image"
+    #state: absent
+    #template: "{{ dir }}/glance_add_image.yml"
+

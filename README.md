@@ -1,36 +1,18 @@
-# Contrail Network Deployed with Canonical Charmed Based Openstack-Acceptance Test Procedure 
-Contrail Networking deployed with Canonical Charmed based Openstack   Functional testing via heat
-# Exeuction 
-This project is created for quick functional verification of Contrail Networking (aka Tungsten Fabric) via heat automation and shell scripting:-  <br/>
+# Contrail_Networking_Canonical_Openstack_Functionality_Test
 
-contrail-juju-verification.sh scripit will verify:- <br/> 
+This repo is forked from:  
+https://github.com/kashif-nawaz/Contrail_Networking_Canonical_Openstack_Functionality_Test  
+The original README can be found underneath ./stacks
 
- *  Login to Contrail VMs/LXD containers <br/> 
- *  Check "Contrail-status" <br/> 
- *  Check "docker images version" <br/>
+It adds an ansible wrapper to the establishment and teardown of Heat Stacks.
 
-create-stack.sh script will create multiple stacks which will be used for verification of the Contrail Networking platform <br/>
- 
- * Create glance image <br/>
+It adds: some playbooks to test the state in the Contrail API that describes the newly created stack.  Also if a management network is available it automates connectivity testing between the instantiated VMs.
 
- * Create flavor (for dpdk and kmod) <br/>
-
- * Create Security Group <br/>
-
- * Create vDNS <br/>
-
- * Create IPAM <br/> 
- 
- * Create Network Policy <br/> 
-
- * Create Left_virtual_network <br/>
-
- * Create Right_virtual_networ <br/> 
-
- * Create Left_VN_VM1 <br/> 
-
- * Create Right_VN_VM1 <br/> 
- 
-
-
-delete-stack.sh script will delete the stacks in reverse order once Contrail Networking verification is completed 
+1) Bring up the resources defined in the heat stacks (it is easy to customise to use different heat stacks)  
+`ansible-playbook instantiate-stacks.yaml`
+2) Test the API  
+`ansible-playbook test-api.yaml`
+3) Test Connectivity between the VMs and from the VMs to the relevant vrouter IP  
+`ansible-playbook test-vm-connectivity.yml  -i vm-inventory.yaml`
+4) Teardown the heat stacks  
+`ansible-playbook teardown-stacks.yaml`

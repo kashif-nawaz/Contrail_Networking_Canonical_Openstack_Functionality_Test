@@ -23,7 +23,7 @@ parameters:
     
   imglocation: 
     type: string
-    default: 'http://192.168.24.31/bionic-server-cloudimg-amd64.img'
+    default: 'http://127.0.0.1:8000/ubuntu-net-tools.qcow2'
 
 resources:
   glance_image:
