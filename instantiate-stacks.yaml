@@ -1,0 +1,87 @@
+---
+# This is dependent on openstack cloud module
+# https://docs.ansible.com/ansible/latest/collections/openstack/cloud/stack_module.html
+
+- name: "Instantiate the Stacks"
+  hosts: localhost
+  tasks:
+    - name: "Create Flavor" 
+      ignore_errors: True
+      openstack.cloud.stack:
+        name: "NAPT_Flavor"
+        state: present
+        template: "{{ stacks_dir }}/add_flavor.yml" 
+    - name: "Create Flavor DPDK"
+      ignore_errors: True
+      openstack.cloud.stack:
+        name: "NAPT_Flavor_DPDK"
+        state: present
+        template: "{{ stacks_dir }}/add_flavor_dpdk.yml"
+    #- name: "Create Image"
+    #ignore_errors: True
+    #register: stack_create
+    #openstack.cloud.stack:
+    #name: "NAPT_Image"
+    #state: present
+    #template: "{{ stacks_dir }}/glance_add_image.yml"
+    - name: "Create Virtual DNS"
+      ignore_errors: True
+      openstack.cloud.stack:
+        name: "NAPT_Virtual_DNS"
+        state: present
+        template: "{{ stacks_dir }}/vdns.yml"
+    - name: "Create IPAM"
+      ignore_errors: True
+      openstack.cloud.stack:
+        name: "NAPT_IPAM"
+        state: present
+        template: "{{ stacks_dir }}/network_ipam_add.yml"
+    - name: "Create Network Policy"
+      ignore_errors: True
+      openstack.cloud.stack:
+        name: "NAPT_Network_Policy"
+        state: present
+        template: "{{ stacks_dir }}/network-policy.yml"
+    - name: "Create Left VN"
+      ignore_errors: True
+      openstack.cloud.stack:
+        name: "NAPT_Left_VN"
+        state: present
+        template: "{{ stacks_dir }}/left_virtual_network_add.yml"
+    - name: "Create Right VN"
+      ignore_errors: True
+      openstack.cloud.stack:
+        name: "NAPT_Right_VN"
+        state: present
+        template: "{{ stacks_dir }}/right_virtual_network_add.yml"
+    - name: "Create Security Group"
+      ignore_errors: True
+      openstack.cloud.stack:
+        name: "NAPT_Security_Group"
+        state: present
+        template: "{{ stacks_dir }}/security_group_add.yml"
+    - name: "Create left VM"
+      ignore_errors: True
+      openstack.cloud.stack:
+        name: "NAPT_Left_VM"
+        state: present
+        template: "{{ stacks_dir }}/left_vn_vm_1_add.yml"
+        parameters:
+          az: nova
+          image_name: ubuntu-net-tools
+          flavor_name: ubuntu
+          ssh_pub_key:  "{{ lookup('file', ssh_id_location) }}"
+    - name: "Create Right VM"
+      ignore_errors: True
+      openstack.cloud.stack:
+        name: "NAPT_Right_VM"
+        state: present
+        template: "{{ stacks_dir }}/right_vn_vm_1_add.yml"
+        parameters:
+          az: nova
+          image_name: ubuntu-net-tools
+          flavor_name: ubuntu
+          ssh_pub_key:  "{{ lookup('file', ssh_id_location) }}"
+
+
+

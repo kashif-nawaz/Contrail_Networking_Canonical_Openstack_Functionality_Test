@@ -1,0 +1,10 @@
+---
+- name: "Instantiate Management Network"
+  hosts: localhost
+  tasks:
+    - name: "Create Management VN"
+      ignore_errors: True
+      openstack.cloud.stack:
+        name: "NAPT_Management_VN"
+        state: present
+        template: "{{ stacks_dir }}/management_virtual_network_add.yml"

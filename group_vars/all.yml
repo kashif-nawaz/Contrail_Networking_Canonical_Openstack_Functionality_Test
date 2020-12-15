@@ -1,0 +1,4 @@
+ssh_id_location: "~/.ssh/id_rsa.pub"
+api_url: "http://172.16.0.100:8082"
+results_dir: "./output"
+stacks_dir: "./stacks"
